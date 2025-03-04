@@ -25,5 +25,4 @@ def root_newton_raphson(x0, f, dfdx):
     x = x0
     while True:
         x = x - f(x) / dfdx(x)
-        if np.abs(f(x)) < 1e-10:
-            return x
+        return x
