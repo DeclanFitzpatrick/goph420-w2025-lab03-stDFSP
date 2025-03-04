@@ -1,6 +1,5 @@
 # for step 4 part 1
 # "Write Python function(s) that find the root of a given function using the Newton-Raphson Method
-
 import numpy as np
 
 def root_newton_raphson(x0, f, dfdx):
@@ -23,6 +22,7 @@ def root_newton_raphson(x0, f, dfdx):
         1D vector of the approx. relative error at each iteration.
     """
     x = x0
-    while True:
-        x = x - f(x) / dfdx(x)
-        return x
+    for k, x_k in enumerate(f):
+        x[x_k] = x[k] - (f[x]/dfdx[x])
+        final_est = np.allclose(x[x_k])
+        return final_est
