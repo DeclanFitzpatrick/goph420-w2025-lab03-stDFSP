@@ -2,10 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-#creating function to make the plot
-def dispersion(b_1, b_2, p_1, p_2, H):
-    Smax = H**2 * np.sqrt(b_1 **-2 + b_2 **-2)
-    g_S = (((p_1)/(p_2)) * ((Smax - Smax**2)/(Smax))) - np.tan(2*np.pi*Smax)
+# creating function to make the plot using part 2
+def dispersion(b_1, b_2, p_1, p_2, c_L, H):
+    ksi = H * np.sqrt(b_1 ** (-2) + c_L ** (-2))  # equation 2
+    g_S = (p_1/p_2) * (np.sqrt(H**2 * (b_1 ** (-2) - b_2 ** (-2)) - ksi**2)/ksi) - np.tan(2*np.pi*ksi)  # equation 1
     return g_S
 
 def main():
@@ -20,8 +20,7 @@ def main():
     #thickness is in units of m
     H = 4000
 
-
-    print(dispersion(b_1, b_2, p_1, p_2, H))
+    print(dispersion(b_1, b_2, p_1, p_2, c_L, H))
 
     #frequency is in Hz
     f = np.linspace(0, 0.1, 10)
