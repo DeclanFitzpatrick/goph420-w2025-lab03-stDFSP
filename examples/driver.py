@@ -4,9 +4,12 @@ import matplotlib.pyplot as plt
 
 # creating function to make the plot using part 2
 def dispersion(b_1, b_2, p_1, p_2, c_L, H):
-    ksi = H * np.sqrt(b_1 ** (-2) + c_L ** (-2))  # equation 2
-    g_S = (p_1/p_2) * (np.sqrt(H**2 * (b_1 ** (-2) - b_2 ** (-2)) - ksi**2)/ksi) - np.tan(2*np.pi*ksi)  # equation 1
+    Smax = H * np.sqrt(b_1 ** (-2) + c_L ** (-2))  # equation 2
+    g_S = (p_1/p_2) * (np.sqrt(H**2 * (b_1 ** (-2) - b_2 ** (-2)) - Smax**2)/Smax) - np.tan(2*np.pi*Smax)  # equation 1
     return g_S
+
+def disperson_deriv(b_1, b_2, p_1, p_2, c_L, H):
+
 
 def main():
     #b_1 and B_2 are in units of m/s
