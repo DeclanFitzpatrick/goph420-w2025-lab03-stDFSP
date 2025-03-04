@@ -7,7 +7,7 @@ name = "goph420_lab03"
 version = "0.0.1"
 authors = [
     { name="Sydney Pasloski", email="sydney.pasloski@ucalgary.ca" },
-    { name="Declan Pasloski", email="sydney.pasloski@ucalgary.ca" },
+    { name="Declan Fitzpatrick", email="declan.fitzpatrick@ucalgary.ca" },
 ]
 description="goph420 lab03 toml"
 readme = "README.md"
