@@ -22,7 +22,8 @@ def root_newton_raphson(x0, f, dfdx):
         1D vector of the approx. relative error at each iteration.
     """
     x = x0
-    for k, x_k in enumerate(f):
-        x[x_k] = x[k] - (f[x]/dfdx[x])
-        final_est = np.allclose(x[x_k])
-        return final_est
+    max_iter = 100
+
+    for k in range(max_iter):
+        x_k = x - f(x)/dfdx(x)
+        return x_k
