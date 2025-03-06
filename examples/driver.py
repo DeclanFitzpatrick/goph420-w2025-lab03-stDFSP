@@ -102,6 +102,7 @@ def main():
             plt.ylim((-5.0, 5.0))
     plt.title('Dispersion vs Love Wave Velocity')
     plt.legend()
+    plt.savefig("C:/Users/sydne/git/goph420/goph420-w2025-lab03-stDFSP/figures/disperse_love_wave.png")
     plt.show()
 
 
