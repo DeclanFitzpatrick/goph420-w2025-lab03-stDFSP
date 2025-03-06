@@ -25,10 +25,11 @@ def dispersion_deriv(x, b_1, b_2, p_1, p_2, H, sqrt_f):
     return dF_dzeta_max
 
 
-def zeta_func(f, b_1, b_2, p_1, p_2, H):
-    """
+"""def zeta_func(b_1, b_2, p_1, p_2, H):
+
     Using the Newton_Raphson root-finding method to solve for zeta.
-    """
+    **** might not use
+    
     zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))   # equation 2, zeta in terms of love wave velocity
     sqrt_f = H * np.sqrt((b_1 ** -2) - (b_2 ** -2))
 
@@ -38,73 +39,80 @@ def zeta_func(f, b_1, b_2, p_1, p_2, H):
 
     initial_guess = np.linspace(0.1, zeta_max, 10)
     zeta_list = []  # for the modes
+
     for x0 in initial_guess:
         # note that 'lambda x' is used to pass the necessary arguments to the functions (so ignores x)
+        # actually solving for roots of dispersion
         zeta = root_newton_raphson(x0,
                                lambda x: dispersion(x, p_1, p_2, sqrt_f),
                                lambda x: dispersion_deriv(x, b_1, b_2, p_1, p_2, H, sqrt_f))
         if zeta is not None and zeta >= 0:
-            zeta_list.append(zeta)
-
-    return zeta_list if zeta_list else None, np.linspace(0.1,2,8)
+            zeta_list.append(zeta)  # only keeping positive roots
+    # returning a list of valid zeta values
+    return zeta_list if zeta_list else None"""
 
 
 def main():
     # b_1 and B_2 are in units of m/s
     b_1 = 1900
     b_2 = 3200
-
     # density are in units of kg/m^3
     p_1 = 1800
     p_2 = 2500
-
     # thickness is in units of m
     H = 4000
 
+    zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))  # equation 2, zeta in terms of love wave velocity
+    sqrt_f = H * np.sqrt((b_1 ** -2) - (b_2 ** -2))
+
     # frequency is in Hz
-    freq = np.linspace(0.1, 5, 10)
+    freq = np.linspace(0.1, 2, 4)
+    nfreq = len(freq)
 
-    # to plot asymptotes
-    asyms_list = []
+    plt.figure(figsize=(10, 8))
 
-    for f in freq:
-        c_L_list = []  # reset the list at each freq iter
-        lambda_L_list = []  # ^^
-        zeta_list, _ = zeta_func(f, b_1, b_2, p_1, p_2, H)
-        print(f'Frequency: {f}')  # to debug
-        print(f'Zeta values: {zeta_list}')  # ^^
+    for j, f in enumerate(freq):
+        asyms = [0.0]
+        t = 0
+        k = 0
 
-        if f != 0:
-            asyms = (1 / (4 * f)) + 1 + (0.1 / f**2)  # creating asymptotes
-            asyms_list.append(asyms if not np.isnan(asyms) else np.nan)
+        while t < zeta_max:
+            t = 0.25 * (2 * k + 1) / f
+            if t < zeta_max:
+                asyms.append(t)
+            k += 1
+        asyms.append(zeta_max)
+        n = len(asyms)
 
-            for zeta in zeta_list:
-                c_L_denom = (b_1 ** -2 - (zeta / H) ** 2)  # solving for various c_L depending on zetas
-                if c_L_denom > 0:
-                    c_L = np.sqrt(1 / c_L_denom)  # equation 2 rearranged
-                    lambda_L = c_L/f  # equation 3
-                else:
-                    c_L = np.nan
-                    lambda_L = np.nan
+        plt.subplot(nfreq, 1, j + 1)  # creating subplots
 
-                # adding new values only if valid
-                c_L_list.append(c_L)
-                lambda_L_list.append(lambda_L)
+        for k, tote in enumerate(asyms):  # looping over asyms list
+            if k and k < n - 1:
+                plt.plot([tote, tote], [-5, 5], "--r")  # plotting a red dash line at each asym
+            if k < n - 1:
+                zetaval = np.linspace(tote + 1e-3, asyms[k + 1] - 1e-3)  # creating zeta array between two asyms
+                print(f'Zeta values: {zetaval}')
+                disperse = dispersion(zetaval, p_1, p_2, H)
+                print(f'Dispersion values: {disperse}')
+                plt.plot(zetaval, disperse, "-b", label='Dispersion Values vs. Zeta')  # x,y
+            plt.grid()
+            plt.xlabel("Love Wave Velocity")
+            plt.ylabel("Dispersion")
+            plt.xlim((0.0, zeta_max))
+            plt.ylim((-5.0, 5.0))
+    plt.title('Dispersion vs Love Wave Velocity')
+    plt.legend()
+    plt.show()
 
-        # printing lists to debug UGH
-        print(f"c_L values: {c_L_list}")
-        print(f"wavelength values: {lambda_L_list}")
 
 
-    # plotting...
+# plotting...
 
     # zeta and c_L over a range of freq (modes)
         # each mode will have a curve of c_L vs f    and lambda vs. f
 
 
-    for asyms in asyms_list:
-        if not np.isnan(asyms):
-            plt.axvline(x=asyms, color='r', linestyle='--')
+
 
 
 if __name__ == "__main__":
