@@ -17,8 +17,7 @@ def main():
     H = 4000
 
     # frequency is in Hz
-    freq = [0.1,0.5,1,1.5,2]
-    nfreq = len(freq)
+    freq = [0.1, 0.5, 1, 1.5, 2]
 
     def asym_finder(f, H, b_1, b_2):
         asyms = [0.0]
@@ -64,17 +63,6 @@ def main():
                 mode.append(roots[k])
 
             print(mode_list)
-
-
-
-
-# plotting...
-
-    # zeta and c_L over a range of freq (modes)
-        # each mode will have a curve of c_L vs f    and lambda vs. f
-
-
-
 
 
 if __name__ == "__main__":
