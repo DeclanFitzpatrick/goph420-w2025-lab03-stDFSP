@@ -5,12 +5,6 @@ from src.goph420_lab03.open_methods import (
     root_newton_raphson,
 )
 
-#def dispersion_deriv(x, b_1, b_2, p_1, p_2, H, sqrt_f):
-# derived equ
-# dF_dzeta_max = ((p_2 / p_1) * (np.sqrt(sqrt_f) / x ** 2) -
-               #((p_2/p_1) * (1/np.sqrt(H ** 2 * (b_1 ** (-2) - b_2 ** (-2))))) -
-               #(2*np.pi * (1 / np.cos(2*np.pi*x)**2)))
-
 
 def main():
     # b_1 and B_2 are in units of m/s
@@ -28,10 +22,14 @@ def main():
 
     for j, f in enumerate(freq):
         zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))  # equation 2, zeta in terms of love wave velocity
-        sqrt_f = H * np.sqrt((b_1 ** -2) - (b_2 ** -2))
 
         def dispersion(x):
-            return (p_1 / p_2) * (np.sqrt(sqrt_f) / x) - np.tan(2 * np.pi * x)  # equation 1
+            return (p_1 / p_2) * (np.sqrt(zeta_max**2 - x**2) / x) - np.tan(2 * np.pi * f * x)  # equation 1
+
+        def dispersion_deriv(x):
+            return ((p_2 / p_1) * (np.sqrt(zeta_max) / x ** 2) -
+                            ((p_2 / p_1) * (1 / np.sqrt(H ** 2 * (b_1 ** (-2) - b_2 ** (-2))))) -
+                            (2 * np.pi * (1 / np.cos(2 * np.pi * f * x) ** 2)))
 
         asyms = [0.0]
         a, k = 0, 0
@@ -44,6 +42,26 @@ def main():
         asyms.append(zeta_max)
         n = len(asyms)
 
+        # root finder loop
+
+        for f in freq:
+            c_L_modes = []
+            wavelength_modes = []
+            modes = []
+
+            for zeta in modes:
+                c_L = -(np.sqrt(zeta_max / H) - b_1**(-2))**-2
+                wavelength = c_L / f
+
+                c_L_modes.append(c_L)
+                wavelength_modes.append(wavelength)
+
+            plt.plot(c_L_modes, wavelength_modes)
+            plt.show()
+
+
+
+
         plt.subplot(nfreq, 1, j + 1)  # creating subplots
         for k, ak in enumerate(asyms):
             if k and k < n - 1:
@@ -51,7 +69,9 @@ def main():
             if k < n - 1:
                 pnts = np.linspace(ak + 1e-3, asyms[k+1] - 1e-3)
                 func = dispersion(pnts)
-                plt.plot(pnts, func, '-r')
+                # print(f'x: {pnts}')
+                # print(f'y: {func}')
+                plt.plot(pnts, func, '-r')  # x y
         plt.grid()
         plt.xlabel("Love Wave Velocity")
         plt.ylabel("Dispersion")
@@ -61,6 +81,8 @@ def main():
     plt.suptitle("Dispersion as a Function of Love Wave Velocity")
     plt.savefig("C:/Users/sydne/git/goph420/goph420-w2025-lab03-stDFSP/figures/disperse_love_wave.png")
     plt.show()
+
+
 
 
 # plotting...
