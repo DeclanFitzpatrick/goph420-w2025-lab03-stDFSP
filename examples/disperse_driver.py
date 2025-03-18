@@ -16,7 +16,6 @@ def main():
     freq = [0.1,0.5,1,1.5,2]
     nfreq = len(freq)
 
-
     for j, f in enumerate(freq):
         zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))  # equation 2, zeta in terms of love wave velocity
 
@@ -33,11 +32,6 @@ def main():
 
         def dispersion(x):
             return (p_1 / p_2) * (np.sqrt(zeta_max**2 - x**2) / x) - np.tan(2 * np.pi * f * x)  # equation 1
-
-        def dispersion_deriv(x):
-            return ((p_2 / p_1) * (np.sqrt(zeta_max) / x ** 2) -
-                            ((p_2 / p_1) * (1 / np.sqrt(H ** 2 * (b_1 ** (-2) - b_2 ** (-2))))) -
-                            (2 * np.pi * (1 / np.cos(2 * np.pi * f * x) ** 2)))
 
         plt.subplot(nfreq, 1, j + 1)  # creating subplots
         for k, ak in enumerate(asyms):
@@ -59,17 +53,6 @@ def main():
     plt.suptitle("Dispersion as a Function of Love Wave Velocity")
     plt.savefig("C:/Users/sydne/git/goph420/goph420-w2025-lab03-stDFSP/figures/disperse_love_wave.png")
     plt.show()
-
-
-
-
-# plotting...
-
-    # zeta and c_L over a range of freq (modes)
-        # each mode will have a curve of c_L vs f    and lambda vs. f
-
-
-
 
 
 if __name__ == "__main__":
