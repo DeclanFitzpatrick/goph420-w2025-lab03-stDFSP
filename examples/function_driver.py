@@ -1,10 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from src.goph420_lab03.open_methods import (
-    root_newton_raphson,
-)
-
 
 def main():
     # b_1 and B_2 are in units of m/s
@@ -15,22 +11,14 @@ def main():
     p_2 = 2500
     # thickness is in units of m
     H = 4000
+
     # frequency is in Hz
     freq = [0.1,0.5,1,1.5,2]
     nfreq = len(freq)
-    print(f"freq: {freq}")
-    print(f"nfreq: {nfreq}")
+
 
     for j, f in enumerate(freq):
         zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))  # equation 2, zeta in terms of love wave velocity
-
-        def dispersion(x):
-            return (p_1 / p_2) * (np.sqrt(zeta_max**2 - x**2) / x) - np.tan(2 * np.pi * f * x)  # equation 1
-
-        def dispersion_deriv(x):
-            return ((p_2 / p_1) * (np.sqrt(zeta_max) / x ** 2) -
-                            ((p_2 / p_1) * (1 / np.sqrt(H ** 2 * (b_1 ** (-2) - b_2 ** (-2))))) -
-                            (2 * np.pi * (1 / np.cos(2 * np.pi * f * x) ** 2)))
 
         asyms = [0.0]
         a, k = 0, 0
@@ -43,32 +31,20 @@ def main():
         asyms.append(zeta_max)
         n = len(asyms)
 
-        # root finder loop
+        def dispersion(x):
+            return (p_1 / p_2) * (np.sqrt(zeta_max**2 - x**2) / x) - np.tan(2 * np.pi * f * x)  # equation 1
 
-        for f in freq:
-            c_L_modes = []
-            wavelength_modes = []
-            modes = []
-
-            for zeta in modes:
-                c_L = -(np.sqrt(zeta_max / H) - b_1**(-2))**-2
-                wavelength = c_L / f
-
-                c_L_modes.append(c_L)
-                wavelength_modes.append(wavelength)
-
-            plt.plot(c_L_modes, wavelength_modes)
-            plt.show()
-
-
-
+        def dispersion_deriv(x):
+            return ((p_2 / p_1) * (np.sqrt(zeta_max) / x ** 2) -
+                            ((p_2 / p_1) * (1 / np.sqrt(H ** 2 * (b_1 ** (-2) - b_2 ** (-2))))) -
+                            (2 * np.pi * (1 / np.cos(2 * np.pi * f * x) ** 2)))
 
         plt.subplot(nfreq, 1, j + 1)  # creating subplots
         for k, ak in enumerate(asyms):
             if k and k < n - 1:
                 plt.plot([ak, ak], [-5, 5], '--b')
             if k < n - 1:
-                pnts = np.linspace(ak + 1e-3, asyms[k+1] - 1e-3)
+                pnts = np.linspace(ak + 1e-3, asyms[k + 1] - 1e-3)
                 func = dispersion(pnts)
                 # print(f'x: {pnts}')
                 # print(f'y: {func}')
@@ -78,6 +54,7 @@ def main():
         plt.ylabel("Dispersion")
         plt.xlim(0, zeta_max)
         plt.ylim(-5, 5)
+
     plt.subplots_adjust(hspace=0.4)
     plt.suptitle("Dispersion as a Function of Love Wave Velocity")
     plt.savefig("C:/Users/sydne/git/goph420/goph420-w2025-lab03-stDFSP/figures/disperse_love_wave.png")
