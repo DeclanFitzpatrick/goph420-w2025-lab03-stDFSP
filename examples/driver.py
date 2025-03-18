@@ -15,10 +15,11 @@ def main():
     p_2 = 2500
     # thickness is in units of m
     H = 4000
-
     # frequency is in Hz
     freq = [0.1,0.5,1,1.5,2]
     nfreq = len(freq)
+    print(f"freq: {freq}")
+    print(f"nfreq: {nfreq}")
 
     for j, f in enumerate(freq):
         zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))  # equation 2, zeta in terms of love wave velocity
