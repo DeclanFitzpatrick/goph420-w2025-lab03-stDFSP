@@ -36,7 +36,7 @@ def main():
     freq = [0.1, 0.5, 1, 1.5, 2]
 
     zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))
-    mode_list = [[], [], []]
+    mode_list = [[] for _ in freq]
 
     for f in freq:
         asyms = asym_finder(f, H, b_1, b_2)  # call asyms func
@@ -59,14 +59,25 @@ def main():
 
         root_list = []  # storing roots
         for x0 in guesses:
-            root_val = root_newton_raphson(x0, f, dispersion_deriv)[0]  # call root finder to solve dispersion
+            root_val = root_newton_raphson(x0, dispersion, dispersion_deriv)  # call root finder to solve dispersion
             root_list.append(root_val)
 
         for k, mode in enumerate(mode_list):  # store each root found in the list at each mode
             if k < len(root_list):
                 mode.append(root_list[k])
 
+        print(f'mode list: {mode_list}')
         print(f'root list: {root_list}')
+
+    mode_list = np.array(mode_list, dtype=object)
+
+    c_L_list = []
+
+    for mode_roots in mode_list:
+        c_L = [np.sqrt(1/(b_1**(-2) - (r/H)**2)) for r in mode_roots]
+        c_L_list.append(c_L)
+    print(f'c_L list: {c_L_list}')
+
 
 
 if __name__ == "__main__":
