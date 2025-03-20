@@ -22,8 +22,21 @@ def root_newton_raphson(x0, f, dfdx):
         1D vector of the approx. relative error at each iteration.
     """
     x = x0
+    eps_a = 1
     max_iter = 100
+    iter_count = 1
+    tol = 5e-6
+    error_list = []
 
-    for k in range(max_iter):
-        x_k = x - f(x)/dfdx(x)
-        return x_k
+    while eps_a > tol and iter_count < max_iter:
+        divide = -f(x) / dfdx(x)
+        x += divide
+
+        eps_a = np.abs(divide / x)
+        error_list.append(eps_a)
+        iter_count += 1
+
+        #if iter_count >= max_iter and eps_a > tol:
+            #print(f'{iter_count} iterations have been completed with a relative error of {eps_a}')
+
+    return x, iter_count, np.array(error_list)
