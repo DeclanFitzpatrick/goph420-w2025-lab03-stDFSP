@@ -11,7 +11,7 @@ def asym_finder(f, H, b_1, b_2):
     """
     asyms = [0.0]
     a, k = 0, 0
-    zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))  # equation 2, zeta in terms of love wave velocity
+    zeta_max = np.sqrt(H**2*(b_1 ** (-2) - b_2 ** (-2)))  # equation 2, zeta in terms of love wave velocity
     while a <= zeta_max:
         a = (0.25 * 1 / f) * (2 * k + 1)
         if a < zeta_max:
@@ -34,7 +34,7 @@ def main():
     # frequency is in Hz
     freq = [0.1, 0.5, 1, 1.5, 2]
 
-    zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))
+    zeta_max = np.sqrt(H**2*(b_1 ** (-2) - b_2 ** (-2)))  # equation 2, zeta in terms of love wave velocity
     mode_list = [[], [], []]
 
     for f in freq:
