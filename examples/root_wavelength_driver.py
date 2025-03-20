@@ -60,7 +60,6 @@ def main():
             if a == 0 or (a == zeta_max and dispersion(a) > 0):
                 continue
             x0 = asyms[j] - 1e-3
-            print(f'Initial guess: {x0}')
             if (H ** 2) * (b_1 ** (-2) - b_2 ** (-2)) - x0 ** 2 >= 0:  # Only add valid guesses
                 guesses.append(x0)
             else:
@@ -87,10 +86,10 @@ def main():
         wave_0_list.append(vel/freq[i])
     wave_1_list = []
     for i, vel in enumerate(c_L_1):
-        wave_1_list.append(vel/freq[i])
+        wave_1_list.append(vel/freq[i+1])
     wave_2_list = []
     for i, vel in enumerate(c_L_2):
-        wave_2_list.append(vel/freq[i])
+        wave_2_list.append(vel/freq[i+2])
 
     plt.plot(freq[-len(wave_0_list):], wave_0_list, label="mode 0")
     plt.plot(freq[-len(wave_1_list):], wave_1_list, label="mode 1")
