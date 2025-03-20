@@ -12,7 +12,7 @@ def asym_finder(f, H, b_1, b_2):
     """
     asyms = [0.0]
     a, k = 0, 0
-    zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))  # equation 2, zeta in terms of love wave velocity
+    zeta_max = np.sqrt(H**2*(b_1 ** (-2) - b_2 ** (-2)))  # equation 2, zeta in terms of love wave velocity
     while a <= zeta_max:
         a = (0.25 * 1 / f) * (2 * k + 1)
         if a < zeta_max:
@@ -35,7 +35,7 @@ def main():
     # frequency is in Hz
     freq = [0.1, 0.5, 1, 1.5, 2]
 
-    zeta_max = H * np.sqrt(b_1 ** (-2) + b_2 ** (-2))
+    zeta_max = np.sqrt(H**2*(b_1 ** (-2) - b_2 ** (-2)))  # equation 2, zeta in terms of love wave velocity
     mode_list = [[], [], []]
 
     for f in freq:
@@ -44,15 +44,11 @@ def main():
         # we need to run function and derivative for each freq
         def dispersion(x):
             func = (H ** 2) * (b_1 ** (-2) - b_2 ** (-2))
-            if func - x**2 < 0:
-                return np.nan
             return (((p_2 / p_1) * np.sqrt(func - x ** 2) / x)
                     - np.tan(2 * np.pi * f * x))
 
         def dispersion_deriv(x):
             func = (H ** 2) * (b_1 ** (-2) - b_2 ** (-2))
-            if func - x ** 2 < 0:
-                return np.nan
             return ((-(p_2 / p_1) * func / (x ** 2 * np.sqrt(func - x ** 2)))
                             - 2 * np.pi * f * (1 / np.cos(2 * np.pi * f * x)) ** 2)
 
@@ -62,10 +58,7 @@ def main():
                 continue
             x0 = asyms[j] - 1e-3
             print(f'Initial guess: {x0}')
-            if (H ** 2) * (b_1 ** (-2) - b_2 ** (-2)) - x0 ** 2 >= 0:  # Only add valid guesses
-                guesses.append(x0)
-            else:
-                pass
+            guesses.append(x0)
 
         root_list = []  # storing roots
         for x0 in guesses:
