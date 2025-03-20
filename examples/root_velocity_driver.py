@@ -57,7 +57,6 @@ def main():
             if a == 0 or (a == zeta_max and dispersion(a) > 0):
                 continue
             x0 = asyms[j] - 1e-3
-            print(f'Initial guess: {x0}')
             guesses.append(x0)
 
         root_list = []  # storing roots
@@ -75,9 +74,6 @@ def main():
     c_L_0 = [np.sqrt(1 / (b_1**(-2) - (r/H)**2)) for r in mode_list[0]]
     c_L_1 = [np.sqrt(1 / (b_1**(-2) - (r/H)**2)) for r in mode_list[1]]
     c_L_2 = [np.sqrt(1 / (b_1**(-2) - (r/H)**2)) for r in mode_list[2]]
-    print(f'mode 0: {c_L_0}')
-    print(f'mode 1: {c_L_1}')
-    print(f'mode 2: {c_L_2}')
 
     plt.plot(freq[-len(c_L_0):], c_L_0, label="mode 0")
     plt.plot(freq[-len(c_L_1):], c_L_1, label="mode 1")
