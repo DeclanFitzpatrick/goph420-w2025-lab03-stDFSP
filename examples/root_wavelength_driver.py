@@ -98,7 +98,7 @@ def main():
 
     plt.xlabel('Frequency (Hz)')
     plt.ylabel('Wavelength Values')
-    plt.title('Wavelengh vs frequency for mode 0, 1, and 2')
+    plt.title('Wavelength vs frequency for mode 0, 1, and 2')
     plt.grid()
     plt.legend()
     plt.savefig('C:/Users/sydne/git/goph420/goph420-w2025-lab03-stDFSP/figures/root_wavelength.png')
