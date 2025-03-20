@@ -13,7 +13,7 @@ def main():
     H = 4000
 
     # frequency is in Hz
-    freq = [0.1,0.5,1,1.5,2]
+    freq = [0.1, 0.5, 1, 1.5, 2]
     nfreq = len(freq)
 
     for j, f in enumerate(freq):
@@ -40,15 +40,12 @@ def main():
             if k < n - 1:
                 pnts = np.linspace(ak + 1e-3, asyms[k + 1] - 1e-3)
                 func = dispersion(pnts)
-                # print(f'x: {pnts}')
-                # print(f'y: {func}')
                 plt.plot(pnts, func, '-r')  # x y
         plt.grid()
-        plt.xlabel("Love Wave Velocity")
-        plt.ylabel("Dispersion")
         plt.xlim(0, zeta_max)
         plt.ylim(-5, 5)
-
+    plt.text(1.3, -12, 'Love Wave Velocity', ha='center',fontsize=12)
+    plt.text(-0.2, 20, 'Dispersion', ha='center', rotation='vertical',fontsize=12)
     plt.subplots_adjust(hspace=0.4)
     plt.suptitle("Dispersion as a Function of Love Wave Velocity")
     plt.savefig("C:/Users/sydne/git/goph420/goph420-w2025-lab03-stDFSP/figures/disperse_love_wave.png")
