@@ -36,7 +36,7 @@ def root_newton_raphson(x0, f, dfdx):
         error_list.append(eps_a)
         iter_count += 1
 
-        #if iter_count >= max_iter and eps_a > tol:
-            #print(f'{iter_count} iterations have been completed with a relative error of {eps_a}')
+        if iter_count >= max_iter and eps_a > tol:
+            print(f'{iter_count} iterations have been completed with a relative error of {eps_a}')
 
     return x, iter_count, np.array(error_list)
