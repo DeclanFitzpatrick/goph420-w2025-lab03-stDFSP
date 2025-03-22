@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+
 def main():
     # b_1 and B_2 are in units of m/s
     b_1 = 1900
@@ -44,8 +45,8 @@ def main():
         plt.grid()
         plt.xlim(0, zeta_max)
         plt.ylim(-5, 5)
-    plt.text(1.3, -12, 'Love Wave Velocity', ha='center',fontsize=12)
-    plt.text(-0.2, 20, 'Dispersion', ha='center', rotation='vertical',fontsize=12)
+    plt.text(1.3, -12, 'Love Wave Velocity', ha='center',fontsize=12) # x
+    plt.text(-0.2, 20, 'Dispersion', ha='center', rotation='vertical',fontsize=12) # y
     plt.subplots_adjust(hspace=0.4)
     plt.suptitle("Dispersion as a Function of Love Wave Velocity")
     plt.savefig("C:/Users/sydne/git/goph420/goph420-w2025-lab03-stDFSP/figures/disperse_love_wave.png")
